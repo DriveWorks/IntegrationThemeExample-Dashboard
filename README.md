@@ -4,6 +4,9 @@
 
 An example web dashboard combining data sources from the DriveWorks Integration Theme Web API & Live License Server endpoints.
 
+Please note: DriveWorks are not accepting pull requests for this example.  
+Join our [online community](https://my.driveworks.co.uk) for discussion, resources and to suggest other examples.
+
 ### Features
 
 - **License Session Data**
