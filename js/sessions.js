@@ -9,41 +9,22 @@ let serverTimeOffset;
 
 // Run on document ready
 (async function () {
-
-    sizeSessionsCard();
-
     serverTimeOffset = await calculateServerTimeOffset();
     getSessions();
-
 })();
 
-// On page load
+// Ensure sessions list is sized correctly to scroll in all browsers
+sizeSessionsCard();
 window.onload = function () {
     sizeSessionsCard()
 };
-
-// On resize
 window.addEventListener("resize", function () {
     sizeSessionsCard();
 });
 
-// Calculate sessions table card max-height
-async function sizeSessionsCard() {
-
-    // Remove an height affecting calculation
-    sessionsCard.style.maxHeight = "0";
-
-    // Set max-height to height of data card
-    const dataHeight = dataCard.offsetHeight;
-    sessionsCard.style.maxHeight = `${Math.floor(dataHeight - 1)}px`;
-
-}
-
 // Get session data
 async function getSessions() {
-
     try {
-
         // Get data
         const response = await fetch(config.licenseDataUrl + "/sessions");
         const data = await response.json();
@@ -67,20 +48,17 @@ async function getSessions() {
 
             // Update session durations
             calculateSessionLengths(sortedSessions);
-
         } else {
             // Show empty state (if previously hidden)
             sessionsTable.classList.add("is-hidden");
             sessionsEmpty.classList.remove("is-hidden");
         }
-
     } catch (error) {
         console.log(error);
     }
 
     // Refresh on interval
     setTimeout(getSessions, config.sessionRefreshInterval * 1000);
-
 }
 
 // Get locations from session IP
@@ -89,7 +67,6 @@ async function getSessionLocations(sessions) {
     // Extract IP addresses from hostname. Lookup if not in known addresses (new IP)
     const newIpAddresses = [];
     for (const [index, session] of sessions.entries()) {
-
         const ip = extractIpAddress(session.hostName);
         sessions[index].ipAddress = ip;
 
@@ -97,16 +74,13 @@ async function getSessionLocations(sessions) {
         if (ip && !knownAddresses.has(ip) && newIpAddresses.indexOf(ip) === -1) {
             newIpAddresses.push(ip);
         }
-
     }
 
     // Lookup geolocation of new, unknown IP addresses
     // Source: GeoJS (https://www.geojs.io/)
     // MIT License: https://github.com/jloh/geojs/blob/master/LICENCE (subject to change by external parties)
     if (config.ipAddressLookup && newIpAddresses.length) {
-
         try {
-
             const response = await fetch(`https://get.geojs.io/v1/ip/country.json?ip=${newIpAddresses.join()}`);
             if (response.ok) {
                 const locations = await response.json();
@@ -128,16 +102,13 @@ async function getSessionLocations(sessions) {
                         }
                     }
                 }
-
             }
-
         } catch (error) {
             console.log(error);
         }
     }
 
     renderSessions(sessions);
-
 }
 
 // Render sessions to table
@@ -179,12 +150,10 @@ function renderSessions(sessions) {
 
     // Display Data
     document.querySelector("#sessions-table tbody").innerHTML = sessionsMarkup;
-
 }
 
 // Calculate the difference between two dates (in a human readable format)
 function timeDifference(previousDate) {
-
     const elapsedTime = (new Date() - previousDate) + serverTimeOffset;
     const msPerMinute = 60 * 1000;
     const msPerHour = msPerMinute * 60;
@@ -204,7 +173,6 @@ function timeDifference(previousDate) {
     const hours = Math.round(elapsedTime / msPerHour);
     const suffix = hours > 1 ? "hrs" : "hr";
     return `${hours} ${suffix} ago`;
-
 }
 
 // Calculate newest/oldest session
@@ -217,7 +185,6 @@ function calculateSessionLengths(sessions) {
     // Oldest session
     const oldestSession = new Date(sessions[sessions.length - 1].sessionStarted);
     document.getElementById("oldest-session").innerHTML = timeDifference(oldestSession);
-
 }
 
 // Extract IP Address from string
@@ -231,9 +198,7 @@ function extractIpAddress(host) {
 
 // Calculate offset between server's reported time and local device time
 async function calculateServerTimeOffset() {
-
     try {
-
         const response = await fetch(config.licenseDataUrl);
         if (response.ok) {
 
@@ -244,10 +209,18 @@ async function calculateServerTimeOffset() {
             // Return the difference between server and current time
             return new Date(serverTime) - new Date();
         }
-
     } catch (error) {
         console.log(error);
         return 0;
     }
+}
 
+// Calculate sessions table card max-height
+async function sizeSessionsCard() {
+    // Remove an height affecting calculation
+    sessionsCard.style.maxHeight = "0";
+
+    // Set max-height to height of data card
+    const dataHeight = dataCard.offsetHeight;
+    sessionsCard.style.maxHeight = `${Math.floor(dataHeight - 1)}px`;
 }

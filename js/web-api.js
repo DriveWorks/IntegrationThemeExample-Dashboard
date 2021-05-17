@@ -5,36 +5,38 @@ const CREDENTIALS = config.credentials;
 const DOCUMENTS_TOTAL_SESSION_KEY = "documentsTotal";
 const DOCUMENTS_QUEUED_SESSION_KEY = "documentsQueued";
 
-// DriveWorks Live Web API
-const DW_CLIENT = new window.DriveWorksLiveClient(SERVER_URL);
-let login;
-
 // Render on load
-(async function () {
-
-    if (SERVER_URL && GROUP_ALIAS){
-
-        try {
-
-            // Login to Group
-            login = await DW_CLIENT.loginGroup(GROUP_ALIAS, CREDENTIALS);
-
-            // Get data from API
-            getApiData();
-
-        } catch (error) {
-            console.log(error);
-        }
-
+let DW_CLIENT;
+function dwClientLoaded() {
+    try {
+        DW_CLIENT = new window.DriveWorksLiveClient(SERVER_URL);
+    } catch (error) {
+        handleUnauthorizedUser("Cannot access client.");
     }
 
-})();
+    clientFunctions();
+}
 
-// Get data
-async function getApiData(){
+// Render on load
+async function clientFunctions() {
+    if (!SERVER_URL || !GROUP_ALIAS) {
+        return;
+    }
 
     try {
+        // Login to Group
+        await DW_CLIENT.loginGroup(GROUP_ALIAS, CREDENTIALS);
 
+        // Get data from API
+        getApiData();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// Get data
+async function getApiData() {
+    try {
         // Get Project and Specification data from API
         await Promise.all([
             getProjects(),
@@ -44,69 +46,55 @@ async function getApiData(){
 
         // Refresh data on interval
         setTimeout(getApiData, config.apiRefreshInterval * 1000);
-
     } catch (error) {
         console.log(error);
     }
-
 }
 
 // Get project data
-async function getProjects(){
-
+async function getProjects() {
     const total = document.getElementById("projects-total");
 
     try {
-
         const projects = await DW_CLIENT.getProjects(GROUP_ALIAS);
         total.innerHTML = projects.length;
-
     } catch (error) {
         console.log(error);
     }
-
 }
 
 // Get specification data
-async function getSpecifications(){
-
+async function getSpecifications() {
     const total = document.getElementById("specifications-total");
 
     try {
-
         const specifications = await DW_CLIENT.getAllSpecifications(GROUP_ALIAS);
         total.innerHTML = specifications.length;
-
         getDocuments(specifications);
-
     } catch (error) {
         console.log(error);
     }
-
 }
 
-async function getSpecificationsQueued(){
-
+async function getSpecificationsQueued() {
     const output = document.getElementById("specifications-queued");
 
-    // Show totals (if previously saved)
-    if (sessionStorage.getItem("specificationsQueued")){
-        output.innerHTML = `In Queue: ${storedGeneratingTotal}`;
+    // Display total queued (if previously retrieved and saved)
+    const storedSpecificationsQueued = sessionStorage.getItem("specificationsQueued");
+    if (storedSpecificationsQueued) {
+        output.innerHTML = `In Queue: ${storedSpecificationsQueued}`;
     }
 
     try {
-
         // Get queued specifications (in "Automatic" state)
         const queuedSpecifications = await DW_CLIENT.getAllSpecifications(GROUP_ALIAS, "$filter=StateType eq 'Automatic'");
         output.innerHTML = `In Queue: ${queuedSpecifications.length}`;
 
-        // Story
-        sessionStorage.getItem("specificationsQueued")
-
+        // Store queued Specifications count for instant display on subsequent loads
+        sessionStorage.setItem("specificationsQueued", queuedSpecifications.length);
     } catch (error) {
         console.log(error);
     }
-
 }
 
 // Get documents data
@@ -116,8 +104,7 @@ let documentsTotal, storedDocumentTotal;
 let queuedTotal, storedQueuedTotal;
 
 // Get documents data
-async function getDocuments(specifications){
-
+async function getDocuments(specifications) {
     const documentRequests = [];
     storedDocumentTotal = sessionStorage.getItem(DOCUMENTS_TOTAL_SESSION_KEY);
     storedQueuedTotal = sessionStorage.getItem(DOCUMENTS_QUEUED_SESSION_KEY);
@@ -125,10 +112,10 @@ async function getDocuments(specifications){
     queuedTotal = 0;
 
     // Show stored totals (if previously saved)
-    if (storedDocumentTotal){
+    if (storedDocumentTotal) {
         totalOutput.innerHTML = storedDocumentTotal;
     }
-    if (storedQueuedTotal){
+    if (storedQueuedTotal) {
         queueOutput.innerHTML = `In Queue: ${storedQueuedTotal}`;
     }
 
@@ -150,15 +137,13 @@ async function getDocuments(specifications){
         // Store totals in session
         sessionStorage.setItem(DOCUMENTS_TOTAL_SESSION_KEY, documentsTotal);
         sessionStorage.setItem(DOCUMENTS_QUEUED_SESSION_KEY, queuedTotal);
-
     } catch (error) {
         console.log(error);
     }
-
 }
 
 // Get documents data
-async function getDocumentsFromSpecification(specification){
+async function getDocumentsFromSpecification(specification) {
 
     // Get document data
     const documents = await DW_CLIENT.getSpecificationDocuments(GROUP_ALIAS, specification);
@@ -168,17 +153,16 @@ async function getDocumentsFromSpecification(specification){
 
     // Check for generating files
     for (let i = 0; i < documents.length; i++) {
-        if (documents[i].fileExists === false){
+        if (documents[i].fileExists === false) {
             queuedTotal++;
         }
     }
 
     // Increase visual output (count up, if no current total shown)
-    if (!storedDocumentTotal){
+    if (!storedDocumentTotal) {
         totalOutput.innerHTML = documentsTotal;
     }
-    if (!storedQueuedTotal){
+    if (!storedQueuedTotal) {
         queueOutput.innerHTML = `In Queue: ${queuedTotal}`;
     }
-
 }

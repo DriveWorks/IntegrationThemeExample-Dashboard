@@ -4,14 +4,14 @@
 
 // By config (default)
 const defaultTheme = config.defaultTheme;
-if (defaultTheme){
+if (defaultTheme) {
     document.body.classList.add(`theme-${defaultTheme}`);
 }
 
 // By url query
 const urlQuery = new URLSearchParams(window.location.search);
 const queryTheme = urlQuery.get("theme");
-if (queryTheme){
+if (queryTheme) {
 
     // Remove any previously set theme classes
     document.body.classList.forEach(className => {
@@ -22,13 +22,12 @@ if (queryTheme){
 
     // Add specified theme class
     document.body.classList.add(`theme-${queryTheme}`);
-
 }
 
 /**
  * Extract configured DriveWorks version data from set
  */
-function getDriveWorksVersionIndex(data){
+function getDriveWorksVersionIndex(data) {
     return (data.driveWorksMajorVersion || data.majorVersion) === config.driveWorksMajorVersion;
 }
 
