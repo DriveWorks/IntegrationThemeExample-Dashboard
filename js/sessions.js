@@ -217,7 +217,7 @@ async function calculateServerTimeOffset() {
 
 // Calculate sessions table card max-height
 async function sizeSessionsCard() {
-    // Remove an height affecting calculation
+    // Remove any height affecting calculation
     sessionsCard.style.maxHeight = "0";
 
     // Set max-height to height of data card
