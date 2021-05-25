@@ -162,7 +162,7 @@
                         <tbody></tbody>
                     </table>
                 </div>
-    
+
                 <div id="sessions-empty" class="sessions-empty">
                     <div class="inner">
                         <svg viewBox="0 0 576 512">
@@ -178,16 +178,26 @@
 
     </main>
 
-    <!-- Info -->
-    <script src="/DriveworksLiveIntegrationClient.min.js"></script>
+    <!-- Scripts -->
     <script src="config.js"></script>
     <script src="js/core.js"></script>
+    <script src="js/status.js"></script>
+    <script src="js/info.js"></script>
+    <script src="js/sessions.js"></script>
+    <script src="js/web-api.js"></script>
 
-    <script src="js/web-api.js" async></script>
-    <script src="js/status.js" async></script>
-    <script src="js/info.js" async></script>
-    <script src="js/sessions.js" async></script>
+    <!-- Option A) Directly load Client Library -->
+    <!-- <script src="https://YOUR-DRIVEWORKS-LIVE-SERVER-URL.COM/DriveworksLiveIntegrationClient.min.js" onload="dwClientLoaded()"></script> -->
+
+    <!-- Option B) Inject Client Library dynamically from server url in config file -->
+    <script>
+        (function(doc, script) {
+            script = doc.createElement("script");
+            script.src = config.serverUrl + "/DriveWorksLiveIntegrationClient.min.js";
+            script.onload = () => dwClientLoaded(); // Custom local function run when client has loaded
+            doc.body.appendChild(script);
+        }(document));
+    </script>
 
 </body>
-
 </html>

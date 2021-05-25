@@ -1,5 +1,5 @@
 # DriveWorks Live - Integration Theme Example - Dashboard
-### Version: 1.4.6
+### Release: 19.0
 #### Minimum DriveWorks Version: 18.0
 
 An example web dashboard combining data sources from the DriveWorks Integration Theme Web API & Live License Server endpoints.
@@ -57,21 +57,28 @@ Join our [online community](https://my.driveworks.co.uk) for discussion, resourc
         * Example: 1.1.1.1 - "HQ", "Main Office"
         * See commented format.
 
-4. In `index.html`, replace "YOUR-DRIVEWORKS-LIVE-SERVER-URL" with the URL of your own DriveWorks Live server that is serving `DriveWorksLiveIntegrationClient.min.js` - including any ports.
-    * This should be the URL that hosts the Integration Theme, and serves it's landing page.
-    * To check that this URL is correct, attempt to load DriveWorksLiveIntegrationClient.min.js in a browser. It should return a minified code library.
-
-5. Host the example locally or on a remote server.
+4. Host the example locally or on a remote server.
     * Ensure `<corsOrigins>` in DriveWorksConfigUser.xml permits request from this location.
     See [Integration Theme Settings](https://docs.driveworkspro.com/Topic/IntegrationThemeSettings) for additional guidance.
 
-6. If encountering any issues, check the browser's console for error messages (F12)
+### Troubleshooting:
+
+If encountering any issues, please check the browser's console for error messages (F12).  
+
+If you are unable to use the dynamic library loading demonstrated in this example:
+1. In `index.html`, uncomment "Option A" & replace "YOUR-DRIVEWORKS-LIVE-SERVER-URL.COM" with the URL of your own DriveWorks Live server that is serving `DriveWorksLiveIntegrationClient.min.js` - including any ports.
+    * This should be the URL that hosts the Integration Theme, and serves it's landing page.
+    * To check that this URL is correct, attempt to load DriveWorksLiveIntegrationClient.min.js in a browser. It should return a minified code library.
+2. Remove the "Option B" `<script>` tag.
 
 ### Potential Issues:
-* When serving this example for a domain different to your DriveWorks Live server, e.g. api.my-site.com from company.com, 'SameSite' cookie warnings may be thrown when the Client SDK attempts to store the current session id.
-    * This appears as "Error: 401 Unauthorized" in the browser console, even with the correct configuration set. 
+
+* When serving this example for a domain different to your DriveWorks Live server, e.g. api.my-site.com from www.company.com, 'SameSite' cookie warnings may be thrown when the Client SDK attempts to store the current session id in a cookie.
+    * This appears as "Error: 401 Unauthorized" in the browser console, even with the correct configuration set.
     * To resolve:
-        * Ensure you are running DriveWorks 18.2 or above, HTTPS is enabled in DriveWorks Live's settings and a valid SSL certificate has been configured via DriveWorksConfigUser.xml.
+        * Ensure you are running DriveWorks 18.2 or above
+        * Ensure HTTPS is enabled in DriveWorks Live's settings
+        * Ensure a valid SSL certificate has been configured via DriveWorksConfigUser.xml.
         * See [Integration Theme Settings](https://docs.driveworkspro.com/Topic/IntegrationThemeSettings) for additional guidance.
 
 ---

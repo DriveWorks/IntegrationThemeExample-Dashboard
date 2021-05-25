@@ -1,26 +1,20 @@
 // Run on load
 (async function() {
-
     getInfo();
-
 })();
 
 async function getInfo() {
-
     const info = await fetch(config.licenseDataUrl + "/info");
     const data = await info.json();
     renderInfo(data);
 
     // Refresh
     setTimeout(getInfo, config.infoRefreshInterval * 1000);
-
 }
 
 function renderInfo(data) {
-
     // Parse Response
     const index = data.findIndex(getDriveWorksVersionIndex);
-
     const maxConcurrentUsers = data[index].maxConcurrentUsers;
     const activeSessions = data[index].activeSessionsCount;
     const onDemandCap = data[index].onDemandCap;
@@ -40,7 +34,7 @@ function renderInfo(data) {
         totalDisplay = totalUsers;
     }
 
-    // Calculate centralised users
+    // Calculate centralized users
     let centralizedDisplay = activeSessions;
     if (activeSessions >= maxConcurrentUsers) {
         centralizedDisplay = maxConcurrentUsers;
@@ -68,40 +62,37 @@ function renderInfo(data) {
     document.getElementById("ondemand-sessions-limit").innerHTML = onDemandCap;
     document.getElementById("total-sessions-limit").innerHTML = totalDisplay;
     document.getElementById("peak-sessions-total").innerHTML = peakSessions;
-
 }
 
 // Create Donut Charts
 function drawDonutChart(el, value, percentage, total, peak) {
-
     // Options
     const donutWidth = 2.5;
 
     // Ensure minumum percentage is 1 (to show something on the chart)
-    if (value > 0 && percentage === 0){
+    if (value > 0 && percentage === 0) {
         percentage++;
     }
 
     // Set status
     let status = "ok";
-    if (percentage >= 75){
+    if (percentage >= 75) {
         status = "warning";
     }
 
     // Draw chart
     document.getElementById(el).innerHTML = `
-		<svg viewBox="0 0 20 20" style="overflow: visible;">
-			<circle class="ring" r="10" cx="10" cy="10" />
-			${peak ? `<circle class="peak" r="5" cx="10" cy="10" stroke-width="10" stroke-dasharray="${(peak * 31.42) / 100} 31.42" transform="rotate(-90) translate(-20)" />` : ""}
-			<circle class="progress status-${status}" r="5" cx="10" cy="10" stroke-width="10" stroke-dasharray="${(percentage * 31.42) / 100} 31.42" transform="rotate(-90) translate(-20)" />
-			<circle class="center" r="${10 - donutWidth}" cx="10" cy="10" />
-		</svg>
-		<div class="chart-value" title="${percentage}%">
-			<div>
-				${value}
-				<div class="total">/ ${total}</div>
-			</div>
-		</div>
-	`;
-
+        <svg viewBox="0 0 20 20" style="overflow: visible;">
+            <circle class="ring" r="10" cx="10" cy="10" />
+            ${peak ? `<circle class="peak" r="5" cx="10" cy="10" stroke-width="10" stroke-dasharray="${(peak * 31.42) / 100} 31.42" transform="rotate(-90) translate(-20)" />` : ""}
+            <circle class="progress status-${status}" r="5" cx="10" cy="10" stroke-width="10" stroke-dasharray="${(percentage * 31.42) / 100} 31.42" transform="rotate(-90) translate(-20)" />
+            <circle class="center" r="${10 - donutWidth}" cx="10" cy="10" />
+        </svg>
+        <div class="chart-value" title="${percentage}%">
+            <div>
+                ${value}
+                <div class="total">/ ${total}</div>
+            </div>
+        </div>
+    `;
 }
