@@ -1,4 +1,4 @@
-# DriveWorks Live - Integration Theme Example - Dashboard
+# Integration Theme Example - Dashboard
 ### Release: 19.2
 #### Minimum DriveWorks Version: 18.0
 
@@ -7,7 +7,11 @@ An example web dashboard combining data sources from the DriveWorks Integration 
 Please note: DriveWorks are not accepting pull requests for this example.  
 Join our [online community](https://my.driveworks.co.uk) for discussion, resources and to suggest other examples.
 
-### Features
+### Overview
+- Dynamically injects the DriveWorks Live Client library script using the configured server url (see config.js).
+    - Provides an example of loading from a static URL, if preferred.
+- Connects to the DriveWorks Live Integration Theme API.
+- Parses data from a supplied DriveWorks Licensing Server endpoint.
 
 - **License Session Data**
     - Centralized, OnDemand and Total Entitlement
@@ -79,6 +83,7 @@ If you are unable to use the dynamic library loading demonstrated in this exampl
         * Ensure you are running DriveWorks 18.2 or above
         * Ensure HTTPS is enabled in DriveWorks Live's settings
         * Ensure a valid SSL certificate has been configured via DriveWorksConfigUser.xml.
+        * Ensure if using an incognito/private window, third-party cookies are not blocked (see browser settings).
         * See [Integration Theme Settings](https://docs.driveworkspro.com/Topic/IntegrationThemeSettings) for additional guidance.
 
 ---
