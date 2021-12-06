@@ -1,5 +1,5 @@
 # DriveWorks Live - Integration Theme Example - Dashboard
-### Release: 19.0
+### Release: 19.2
 #### Minimum DriveWorks Version: 18.0
 
 An example web dashboard combining data sources from the DriveWorks Integration Theme Web API & Live License Server endpoints.
