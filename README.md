@@ -1,5 +1,5 @@
 # DriveWorks Live - Integration Theme Example - Dashboard
-### Release: 20.0
+### Release: 20.1
 #### Minimum DriveWorks Version: 18.0
 
 An example web dashboard combining data sources from the DriveWorks Integration Theme Web API & Live License Server endpoints.
@@ -53,23 +53,23 @@ Join our [online community](https://my.driveworks.co.uk) for discussion, resourc
     * `driveWorksMajorVersion` - Major version of DriveWorks to display data from (multiple may be available) e.g. '18'
 
 3. [optional] Configure additional settings
-    * `statusRefreshInterval` - The interval (in seconds) to request status data (version major/minor)
-    * `infoRefreshInterval` - The interval (in seconds) to request license info data (max sessions, on-demand cap, peak usage etc.)
-    * `sessionRefreshInterval` - The interval (in seconds) to request live session data (server name, hostname/address, browser, start time etc.)
-    * `apiRefreshInterval` - The interval (in seconds) to request DriveWorks Live API data (Projects/Specifications/Documents)
+    * `statusRefreshInterval` - The interval (in seconds) to request status data (version major/minor).
+    * `infoRefreshInterval` - The interval (in seconds) to request license info data (max sessions, on-demand cap, peak usage etc.).
+    * `sessionRefreshInterval` - The interval (in seconds) to request live session data (server name, hostname/address, browser, start time etc.).
+    * `apiRefreshInterval` - The interval (in seconds) to request DriveWorks Live API data (Projects/Specifications/Documents).
     * `dateLocale` - ISO 639-1 standard language code (e.g. en-US). Used to format dates displayed.
     * `defaultTheme` - (light/dark) Color theme for dashboard.
     * `ipAddressLookup` - (true/false) Map session user address to country of origin.
-        * Uses [GeoJS](https://github.com/jloh/geojs) for user address lookup - please refer to it's [Third Party Licensing](https://github.com/jloh/geojs/blob/master/LICENCE)
+        * Uses [GeoJS](https://github.com/jloh/geojs) for user address lookup - please refer to it's [Third Party Licensing](https://github.com/jloh/geojs/blob/master/LICENCE).
     * `knownAddresses` - Provide a list of known addresses to skip address lookup and provide custom location identification.
         * Example: 1.1.1.1 - "HQ", "Main Office"
         * See commented format.
 
-4. Ensure that the Integration Theme server is running, using any of the available methods (e.g. Personal Web Edition, DriveWorks Live, IIS)
+4. Ensure that the Integration Theme server is running, using any of the available methods (e.g. Personal Web Edition, DriveWorks Live, IIS).
     * For more information, see [Selecting the Integration Theme](https://docs.driveworkspro.com/Topic/IntegrationThemeSelect).
 
 5. Host the example locally or on a remote server.
-    * Ensure `<corsOrigins>` in DriveWorksConfigUser.xml permits request from this location.
+    * Ensure `<corsOrigins>` in DriveWorksConfigUser.xml permits requests from this location.
     See [Integration Theme Settings](https://docs.driveworkspro.com/Topic/IntegrationThemeSettings) for additional guidance.
 
 ### Troubleshooting:
