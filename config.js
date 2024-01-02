@@ -14,7 +14,7 @@ const config = {
         password: "",
     },
     licenseDataUrl: "", // Example: http://YOUR-LICENCE-SERVER:27080 - See https://docs.driveworkspro.com/topic/LicenseManagerDriveWorksLive#driveworks-live-licensing-api
-    driveWorksMajorVersion: 20, // Major version of DriveWorks to display data from (multiple may be available)
+    driveWorksMajorVersion: 21, // Major version of DriveWorks to display data from (multiple may be available)
     statusRefreshInterval: 120, // seconds
     infoRefreshInterval: 10, // seconds
     sessionRefreshInterval: 10, // seconds
